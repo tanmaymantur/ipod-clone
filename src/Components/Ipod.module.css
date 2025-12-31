@@ -1,0 +1,72 @@
+.container {
+    height: 450px;
+    width: 350px;
+    background-color: #cacacaa8;
+    border-radius: 5%;
+    display: flex;
+    flex-direction: column;
+}
+
+.screen {
+    height: 50%;
+    margin: 20px 5px;
+    border: 2px solid black;
+    display: flex;
+}
+
+.list {
+    width: 50%;
+    background-color: white;
+    padding: 16px;
+}
+
+.list h4 {
+    margin: 0px 0px 10px 5px;
+}
+
+.menuItems {
+    padding: 5px;
+    margin-bottom: 5px;
+    background: #5aabf9f5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cover {
+    width: 50%;
+}
+
+.cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.wheelContainer {
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.outerWheel {
+    height: 85%;
+    width: 55%;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+}
+
+.innerWheel {
+    background: grey;
+    height: 40%;
+    width: 40%;
+    border-radius: 50%;
+}
