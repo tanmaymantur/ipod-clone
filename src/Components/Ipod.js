@@ -1,20 +1,28 @@
 import { Component, createRef } from "react";
 import styles from "./Ipod.module.css"
-import MenuListItem from "./MenuListItem";
 import WheelIcon from "./WheelIcon";
+import MenuScreen from "./MenuScreen";
 
-const menuItemsTitles = [
+const mainMenu = [
     "Cover Flow",
     "Music",
     "Game",
     "Settings"
 ]
 
+const musicMenu = [
+    'All Songs',
+    'Artists',
+    'Albums'
+]
+
 export default class Ipod extends Component {
     constructor() {
         super();
         this.state = {
-            activeIndex: 0
+            activeIndex: 0,
+            screenContent: 'mainMenu',
+            currentMenu: mainMenu
         }
         this.wheelRef = createRef();
         this.lastAngle = null;
@@ -57,42 +65,120 @@ export default class Ipod extends Component {
     }
 
     updateIndex = (direction) => {
-        const { activeIndex } = this.state;
+        const { activeIndex, currentMenu } = this.state;
         let newIndex;
 
         if (direction === 1) {
-            newIndex = (activeIndex + 1) % menuItemsTitles.length;
+            newIndex = (activeIndex + 1) % currentMenu.length;
         }
         else {
-            newIndex = (activeIndex - 1 + menuItemsTitles.length) % menuItemsTitles.length
+            newIndex = (activeIndex - 1 + currentMenu.length) % currentMenu.length
         }
         this.setState({
             activeIndex: newIndex
         })
     }
 
+    handleSelectMenu = (activeIndex) => {
+        const { currentMenu } = this.state;
+        if (activeIndex === 'mainMenu') {
+            this.setState({
+                screenContent: "mainMenu"
+            })
+        }
+        if (activeIndex === 0) {
+            this.setState({
+                screenContent: currentMenu[activeIndex]
+            })
+        }
+        if (activeIndex === 1) {
+            this.setState({
+                currentMenu: musicMenu,
+                screenContent: currentMenu[activeIndex]
+            })
+        }
+        if (activeIndex === 2) {
+            this.setState({
+                screenContent: currentMenu[activeIndex]
+            })
+        }
+        if (activeIndex === 3) {
+            this.setState({
+                screenContent: currentMenu[activeIndex]
+            })
+        }
+    }
+
+    handleMenuClick = () => {
+        const { screenContent } = this.state;
+        if (musicMenu.includes(screenContent)) {
+            this.setState({
+                screenContent: "Music"
+            })
+        }
+        else {
+            this.setState({
+                screenContent: "mainMenu",
+                currentMenu: mainMenu
+            })
+        }
+    }
+
+    renderContent = (screenContent, activeIndex) => {
+        switch (screenContent) {
+            case "mainMenu":
+                return <MenuScreen title="Ipod.js" activeIndex={activeIndex} menuItems={mainMenu} />;
+            case "Cover Flow":
+                return (
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <h3>Cover Flow</h3>
+                    </div>
+                );
+            case "Game":
+                return (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                        <img height='75' src="https://cdn-icons-png.flaticon.com/128/686/686589.png" alt="games" />
+                        <h3>Games</h3>
+                    </div>
+                );
+            case "Settings":
+                return (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                        <img height='75' src="https://cdn-icons-png.flaticon.com/128/2040/2040504.png" alt="setting" />
+                        <h3>Settings</h3>
+                    </div>
+                );
+            case "Music":
+                return <MenuScreen title="Music" activeIndex={activeIndex} menuItems={musicMenu} />;
+            case 'All Songs':
+                return (
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <h3>All songs List</h3>
+                    </div>
+                );
+            case 'Artists':
+                return (
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <h3>All Artists</h3>
+                    </div>
+                );
+            case 'Albums':
+                return (
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <h3>All Albums</h3>
+                    </div>
+                );
+            default:
+                return <h1>Something Went Wrong</h1>
+        }
+    }
+
     render() {
-        const { activeIndex } = this.state;
+        const { activeIndex, screenContent } = this.state;
         return (
             <div className={styles.container}>
                 <div className={styles.screen}>
-                    <div className={styles.list}>
-                        <h4>iPod.js</h4>
-                        <div>
-                            {/* <div className={styles.menuItems}>
-                                <span>Cover Flow</span>
-                                <img style={{ height: '10px' }} src="https://cdn-icons-png.flaticon.com/128/2985/2985179.png" alt="right arrow" />
-                            </div>
-                            <div className={styles.menuItems}>Music</div>
-                            <div className={styles.menuItems}>Games</div>
-                            <div className={styles.menuItems}>Settings</div> */}
-                            {menuItemsTitles.map((title, i) => <MenuListItem active={i === activeIndex} title={title} />)}
-                        </div>
-
-                    </div>
-                    <div className={styles.cover}>
-                        <img src="https://i0.wp.com/picjumbo.com/wp-content/uploads/beautiful-beach-free-image-after-sunset-sky-free-photo.jpeg?w=2210&quality=70" alt="cover" />
-                    </div>
+                    {this.renderContent(screenContent, activeIndex)}
                 </div>
                 <div className={styles.wheelContainer}>
                     <div
@@ -100,7 +186,7 @@ export default class Ipod extends Component {
                         className={styles.outerWheel}
                         onMouseMove={this.handleMouseMove}
                     >
-                        <span style={{ position: 'absolute', top: 15, color: 'grey', fontWeight: 'bold', cursor: 'default' }}>Menu</span>
+                        <span onClick={this.handleMenuClick} style={{ position: 'absolute', top: 15, color: 'grey', fontWeight: 'bold', cursor: 'default' }}>Menu</span>
                         <span style={{ position: 'absolute', bottom: 5 }}><WheelIcon
                             src="https://cdn-icons-png.flaticon.com/128/8428/8428588.png"
                             alt="play/pause"
@@ -116,7 +202,7 @@ export default class Ipod extends Component {
                                 alt="next"
                             />
                         </span>
-                        <span className={styles.innerWheel}></span>
+                        <span onClick={() => this.handleSelectMenu(activeIndex)} className={styles.innerWheel}></span>
                     </div>
                 </div>
             </div>
